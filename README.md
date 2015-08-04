@@ -42,7 +42,7 @@
 			<td>
 			<p style="text-align: center;"><strong>Mandatory/Optional</strong></p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p style="text-align: center;"><strong>Remarks</strong></p>
 			</td>
 		</tr>
@@ -56,7 +56,7 @@
 			<td>
 			<p>Mandatory (if uiverify.testdir not specified)</p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p>Reads the commands to be executed on the selenium driver. Essentially a test driver.</p>
 			</td>
 		</tr>
@@ -70,7 +70,7 @@
 			<td>
 			<p>Mandatory (if uiverify.testfile not specified)</p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p>Reads the directory for all files, which are treated as teststep files and are executed.</p>
 
 			<p><em>Only one of uiverify.testfile or uiverify.testdir can be specified.</em></p>
@@ -86,7 +86,7 @@
 			<td>
 			<p>Mandatory</p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p>This is the directory where the baseline images will be stored. While running in <em>STORE</em> mode, the utility writes to this directory. While running in <em>COMPARE</em> mode, the utility refers to this directory for the baseline images</p>
 			</td>
 		</tr>
@@ -100,7 +100,7 @@
 			<td>
 			<p>Mandatory in COMPARE mode</p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p>This is the directory where the images during the <em>COMPARE</em> run will be temporarily stores for comparison. Post run this directory is cleared.</p>
 			</td>
 		</tr>
@@ -114,7 +114,7 @@
 			<td>
 			<p>Mandatory in COMPARE mode</p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p>Results are written to this directory. A sub-directory with current date-time is created, if already exists appends numbers to create a unique name.</p>
 			</td>
 		</tr>
@@ -130,7 +130,7 @@
 
 			<p>Default : false</p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p>Controls the verbosity of the run</p>
 			</td>
 		</tr>
@@ -146,7 +146,7 @@
 
 			<p>Default : 1</p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p>Controls the number of threads to execute in parallel. If uiverify.testfile is specified, increasing the threads has no affect. Only when it has multiple files to run via uiverify.testdir while it spawn multiple threads.</p>
 			</td>
 		</tr>
@@ -162,7 +162,7 @@
 
 			<p>Default: False</p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p>Controls if the compared image bits are retained in the difference image. By default pixels which match are put as black pixel in the difference image</p>
 			</td>
 		</tr>
@@ -178,7 +178,7 @@
 
 			<p>Default: Gray Scale</p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p>Controls what color would be used to mark the differences in pixels in difference image. By default gray scale pixel is used. One could verify produce a RGB value as integer</p>
 			</td>
 		</tr>
@@ -194,7 +194,7 @@
 
 			<p>Default: true</p>
 			</td>
-			<td style="width:274px;">
+			<td>
 			<p>Controls if a rectangle is drawn around the differences.</p>
 			</td>
 		</tr>
@@ -210,27 +210,27 @@
 <table border="1" cellpadding="0" cellspacing="0" height="2042" width="807">
 	<tbody>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p style="text-align: center;"><strong>Keyword</strong></p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<p style="text-align: center;"><strong>Arguments</strong></p>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p style="text-align: center;"><strong>Remarks</strong></p>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>openBrowser</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<ol>
 				<li>Browser name</li>
 				<li>URL</li>
 			</ol>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>The first argument is the name of the browser to launch, valid values are</p>
 
 			<ul>
@@ -244,63 +244,63 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>Maximize</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<p style="margin-left:.25in;">&nbsp;</p>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>Maximizes the browser window</p>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>enterURL</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<ol>
 				<li>URL</li>
 			</ol>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>Will make the browser navigate to the URL given. Please include http/https in the URL</p>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>scrollToBottom</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<p style="margin-left:.25in;">&nbsp;</p>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>Scrolls the browser window to the bottom</p>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>scrollToTop</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<p style="margin-left:.25in;">&nbsp;</p>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>Scrolls the browser window to the top</p>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>enterText</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<ol>
 				<li>Locator Type</li>
 				<li>Locator Value</li>
 				<li>Text to enter</li>
 			</ol>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>The locator type is the method by which the locator value should be located. It is essentially the &ldquo;By&rdquo; class of Selenium. Valid values are:</p>
 
 			<ul>
@@ -323,12 +323,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>ClickOnButton</p>
 
 			<p>ClickOnLink</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<ol>
 				<li>Locator Type</li>
 				<li>Locator Value</li>
@@ -336,22 +336,22 @@
 
 			<p style="margin-left:.25in;">&nbsp;</p>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>Same as above</p>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>selectDropDown</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<ol>
 				<li>Locator Type</li>
 				<li>Locator Value</li>
 				<li>Text to select</li>
 			</ol>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>First two arguments, refer to remarks of &ldquo;enterText&rdquo; keyword</p>
 
 			<p>&nbsp;</p>
@@ -360,23 +360,23 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>sleep</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<ol>
 				<li>Time in milliseconds</li>
 			</ol>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>Sleeps for the specified time period</p>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>takeSnapShot</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<ol>
 				<li>Description</li>
 				<li>File name</li>
@@ -384,7 +384,7 @@
 				<li>Region specification (optional)</li>
 			</ol>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>Description is free flow text which will be used in the resulting report to indicate the step, does not influence the test.</p>
 
 			<p>&nbsp;</p>
@@ -407,13 +407,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:120px;">
+			<td>
 			<p>closeBrowser</p>
 			</td>
-			<td style="width:162px;">
+			<td>
 			<p style="margin-left:.25in;">&nbsp;</p>
 			</td>
-			<td style="width:354px;">
+			<td>
 			<p>Closed the browser and releases the driver object.</p>
 			</td>
 		</tr>
