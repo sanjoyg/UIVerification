@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Properties;
 
 import org.sanjoy.uitest.error.ErrorMessages;
-import org.sanjoy.uitest.imaging.ImageVerifier;
 import org.sanjoy.uitest.imaging.ImageVerifierConfig;
 
 public class Configuration {
@@ -21,15 +20,12 @@ public class Configuration {
 	public static String RESULTS_DIR_KEY 				= "uiverify.resultsdir";
 	public static String VERBOSE_KEY 					= "uiverify.verbose";
 	public static String PARALLEL_THREADS 				= "uiverify.parallelize";
-	public static String RETAIN_IMG_IN_DIFF				= "uiverify.retainimgindiff";
-	public static String DIFF_MARK_COLOR_KEY 			= "uiverify.diffmarkcolor";
-	public static String DIFF_DRAW_RECTS				= "uiverify.drawdiffrect";
 
-	private static String YES_STR				= "YES";
-	private static String TRUE_STR				= "TRUE";
-	private static String STORE_STR				= "STORE";
-	private static String COMPARE_STR			= "COMPARE";
-	private static String STANDALONE_STR		= "STANDALONE";
+	public static String YES_STR				= "YES";
+	public static String TRUE_STR				= "TRUE";
+	public static String STORE_STR				= "STORE";
+	public static String COMPARE_STR			= "COMPARE";
+	public static String STANDALONE_STR		= "STANDALONE";
 	private static String DEFAULT_COMPARE_DIR	= "_temp";
 
 	private String _storeImageDir = null;
@@ -69,7 +65,8 @@ public class Configuration {
 
 		if (_runMode != RunMode.STORE)
 			setupReportDir();
-		setupImageVerificationProps();
+
+		ImageVerifierConfig.setupImageVerificationProps();
 	}
 
 	private void setupRunMode(String[] args) {
@@ -216,36 +213,6 @@ public class Configuration {
 		}
 	}
 
-	public void setupImageVerificationProps() {
-		/*
-		 * createSeparate difference image : If a third image file is to be created
-		 * difference mark color : default grey scale
-		 * draw difference rectangles
-		 */
-
-		String value = System.getProperties().getProperty(RETAIN_IMG_IN_DIFF);
-		ImageVerifierConfig.setRetainOrgImage(false);
-		if (value != null && value.length() != 0 ) {
-			if (YES_STR.equalsIgnoreCase(value) || TRUE_STR.equalsIgnoreCase(value))
-				ImageVerifierConfig.setRetainOrgImage(true);
-		}
-
-		value = System.getProperties().getProperty(DIFF_MARK_COLOR_KEY);
-		int diffMarkColor = ImageVerifier.GREY_SCALE_MARK_COLOR;
-		if (value != null && value.length() != 0 ) {
-			try {
-				diffMarkColor = Integer.parseUnsignedInt(value);
-				ImageVerifierConfig.setDiffMarkColor(diffMarkColor);
-			} catch (Exception ex) {;}
-		}
-
-		value = System.getProperties().getProperty(DIFF_DRAW_RECTS);
-		ImageVerifierConfig.setDrawDiffRects(false);
-		if (value != null && value.length() != 0 ) {
-			if (YES_STR.equalsIgnoreCase(value) || TRUE_STR.equalsIgnoreCase(value))
-				ImageVerifierConfig.setDrawDiffRects(true);
-		}
-	}
 
 	public void verifyAndInitializeDirs() {
 
