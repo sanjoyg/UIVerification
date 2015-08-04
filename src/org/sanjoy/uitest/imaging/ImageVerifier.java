@@ -70,7 +70,7 @@ public class ImageVerifier {
 	        for (int j = 0; j < width1; j++) {
 	            int rgb1 = img1.getRGB(j, i);
 	            int rgb2 =0;
-	            if (j < width2 || i < height2) {
+	            if (j < width2 && i < height2) {
 	            	rgb2 = img2.getRGB(j, i);
 	            }
 
@@ -95,16 +95,16 @@ public class ImageVerifier {
 	            	if (diff != 0 && ImageVerifierConfig.getDiffMakrColor() != GREY_SCALE_MARK_COLOR) {
 	            		result = ImageVerifierConfig.getDiffMakrColor();
 	            	}
-	            	buildOrFindRectangle(new Point(j,i));
+	            	//buildOrFindRectangle(new Point(j,i));
 	            }
 	            outImg.setRGB(j, i, result); // Set result
 	        }
 	    }
 
-	    adjustRectangles();
+	   // adjustRectangles();
 
 	    if (ImageVerifierConfig.isDrawDiffRects()) {
-	    	outImg = drawDiffRectangles(outImg);
+	    	//outImg = drawDiffRectangles(outImg);
 	    }
 
 	    try {
@@ -189,7 +189,7 @@ public class ImageVerifier {
 			_result.setDiffImage(diffFileName);
 		}
 
-		drawDiffRectsInCompareImage(compareImage);
+		//drawDiffRectsInCompareImage(compareImage);
 
 		_result.setBaseImage(baseImage);
 		_result.setCompareToImage(compareImage);
