@@ -21,15 +21,14 @@
 
 <p><span style="font-family:verdana,geneva,sans-serif;">Set the JAR file in the CLASSPATH</span></p>
 
-<p><code>java org.sanjoy.uitest STORE config.file<code> </code> </code></p>
+<code>java org.sanjoy.uitest STORE config.file<code> </code>
 
-<p><code><code><code><code><span style="font-family:verdana,geneva,sans-serif;"><em>Configuration</em></span></code></code></code></code></p>
+<p><span style="font-family:verdana,geneva,sans-serif;"><em>Configuration</em></span></p>
 
-<p><code><code><code><code><span style="font-family:verdana,geneva,sans-serif;">One mandatory command-line parameter is requires, which is the mode of the run. Which is either &ldquo;STORE&rdquo; or &ldquo;COMPARE&rdquo; (case in-sensitive), the operations of which are described above. The rest of the configuration parameters are specified in either as command line JVM argument using &ndash;D<em>key</em>=<em>value</em> or by specifying in the configuration file as a property file (<em>key=value</em>) format. The same configuration key can be specified as a JVM argument or configuration property key. For example</span></code></code></code></code></p>
+<p><span style="font-family:verdana,geneva,sans-serif;">One mandatory command-line parameter is requires, which is the mode of the run. Which is either &ldquo;STORE&rdquo; or &ldquo;COMPARE&rdquo; (case in-sensitive), the operations of which are described above. The rest of the configuration parameters are specified in either as command line JVM argument using &ndash;D<em>key</em>=<em>value</em> or by specifying in the configuration file as a property file (<em>key=value</em>) format. The same configuration key can be specified as a JVM argument or configuration property key. For example</span></p>
 
-<p><code><code>java Duiverify.verbose=true or in the configuration file specify ui.verbose=true</code> </code></p>
-
-<p><code><code><code><code><span style="font-family:verdana,geneva,sans-serif;">If a key is passed as a JVM argument and also in the configuration file, the value defined in the configuration file overrides the value passed as a JVM argument.</span></code></code></code></code></p>
+<code>java Duiverify.verbose=true or in the configuration file specify ui.verbose=true</code>
+<p><span style="font-family:verdana,geneva,sans-serif;">If a key is passed as a JVM argument and also in the configuration file, the value defined in the configuration file overrides the value passed as a JVM argument.</span></p>
 
 <table border="1" cellpadding="0" cellspacing="0" height="1180" width="807">
 	<tbody>
@@ -427,7 +426,7 @@
 
 <p>The standalone is triggered when the first argument is passed as <em>&ldquo;STANDALONE&rdquo;</em>. In this mode the utility runs always in <em>COMPARE </em>mode and doesn&rsquo;t expect any teststep file as it doesn&rsquo;t run any test. This mode is handy when with an existing test framework, snapshots are baseline and comparison images are taken and only differences and report generation is required. For existing assets, where a team doesn&rsquo;t want to write new &ldquo;teststeps&rdquo; to be written again would be useful.</p>
 
-<p><code><em>java org.sanjoy.uitest STORE config.file</em></code></p>
+<code>java org.sanjoy.uitest STORE config.file</code>
 
 <p>Please read the &ldquo;Configuration&rdquo; section in &ldquo;TestDriver&rdquo; mode.</p>
 
