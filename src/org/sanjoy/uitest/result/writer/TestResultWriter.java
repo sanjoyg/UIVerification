@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
 import org.sanjoy.uitest.config.Configuration;
+import org.sanjoy.uitest.error.ErrorMessages;
 import org.sanjoy.uitest.imaging.ImageVerifierResult;
 import org.sanjoy.uitest.result.TestFileResult;
 import org.sanjoy.uitest.result.TestSuitResult;
@@ -77,7 +78,7 @@ public class TestResultWriter {
 			bw.write(report);
 			bw.flush();
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to write report file : " + reportFileName + " : " + e.getMessage());
+			throw new RuntimeException(ErrorMessages.ERROR_WRITING_RESULT + reportFileName + " : " + e.getMessage());
 		} finally {
 			try { if (bw != null) bw.close(); } catch (Exception ex) {}
 			try { if (fw != null) fw.close(); } catch (Exception ex) {}
@@ -91,7 +92,7 @@ public class TestResultWriter {
 			FileUtils.copyFile(new File(srcPath), new File(moveDestPath));
 		} catch (IOException e) {
 			// Consume
-			System.err.println("warn : could not copy image file from : " + srcPath + " to : " + moveDestPath);
+			System.err.println(ErrorMessages.WARN_COPYING_IMAGE + srcPath + " --> : " + moveDestPath);
 		}
 		return destPath;
 	}

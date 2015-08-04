@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sanjoy.uitest.config.Configuration;
 import org.sanjoy.uitest.config.RunMode;
+import org.sanjoy.uitest.error.ErrorMessages;
 import org.sanjoy.uitest.imaging.ImageVerifier;
 import org.sanjoy.uitest.imaging.ImageVerifierResult;
 import org.sanjoy.uitest.result.TestFileResult;
@@ -43,7 +44,7 @@ public class TestFileRunner implements Runnable {
 				}
 			}
 		} catch (RuntimeException rex) {
-			System.err.println("Error executing Test Suite : " + _fileName);
+			System.err.println(ErrorMessages.ERROR_EXEC_TEST_SUITE + _fileName);
 			System.err.println(rex.getMessage());
 			if (Configuration.getInstance().isVerbose()) rex.printStackTrace();
 		} finally {
@@ -61,6 +62,7 @@ public class TestFileRunner implements Runnable {
 		String tempImageFile = Configuration.getInstance().getCompareImageDir() + File.separatorChar + snapShotStep.getFileName();
 
 		try {
+
 			ImageVerifier imageVerifier = new ImageVerifier();
 			imageVerifier.setRegions(snapShotStep.getRegions());
 			imageVerifier.setInclude(snapShotStep.isInclude());
@@ -74,7 +76,7 @@ public class TestFileRunner implements Runnable {
 			}
 
 		} catch (Throwable ex) {
-			throw new RuntimeException("Failed to compare images <" + storeImageFile + "> and <" + tempImageFile + "> : " + ex.getMessage());
+			throw new RuntimeException(ErrorMessages.ERROR_COMPARING_IMAGES + storeImageFile + " , " + tempImageFile + " : " + ex.getMessage());
 		}
 	}
 }

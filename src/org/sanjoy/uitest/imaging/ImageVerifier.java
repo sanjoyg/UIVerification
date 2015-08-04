@@ -84,10 +84,7 @@ public class ImageVerifier {
 	            diff = Math.abs(r1 - r2); // Change
 	            diff += Math.abs(g1 - g2);
 	            diff += Math.abs(b1 - b2);
-	            diff /= 3; // Change - Ensure result is between 0 - 255
-	            // Make the difference image gray scale
-	            // The RGB components are all the same
-
+	            diff /= 3;
 	            result = (ImageVerifierConfig.isRetainOrgImage() ? result = rgb2 : (diff << 16) | (diff << 8) | diff);
 
 	            if (diff != 0) {
@@ -95,16 +92,16 @@ public class ImageVerifier {
 	            	if (diff != 0 && ImageVerifierConfig.getDiffMakrColor() != GREY_SCALE_MARK_COLOR) {
 	            		result = ImageVerifierConfig.getDiffMakrColor();
 	            	}
-	            	//buildOrFindRectangle(new Point(j,i));
+	            	buildOrFindRectangle(new Point(j,i));
 	            }
 	            outImg.setRGB(j, i, result); // Set result
 	        }
 	    }
 
-	   // adjustRectangles();
+	   adjustRectangles();
 
 	    if (ImageVerifierConfig.isDrawDiffRects()) {
-	    	//outImg = drawDiffRectangles(outImg);
+	    	outImg = drawDiffRectangles(outImg);
 	    }
 
 	    try {
@@ -189,7 +186,7 @@ public class ImageVerifier {
 			_result.setDiffImage(diffFileName);
 		}
 
-		//drawDiffRectsInCompareImage(compareImage);
+		drawDiffRectsInCompareImage(compareImage);
 
 		_result.setBaseImage(baseImage);
 		_result.setCompareToImage(compareImage);

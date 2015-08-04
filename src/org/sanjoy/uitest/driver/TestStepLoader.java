@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import org.sanjoy.uitest.error.ErrorMessages;
 import org.sanjoy.uitest.steps.ExecutionStep;
 import org.sanjoy.uitest.steps.SnapShotStep;
 
@@ -42,7 +43,7 @@ public class TestStepLoader {
 					steps.add(processLine(lineNo, line, steps));
 			}
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to load/read file : " + fileName + " : " + e.getMessage());
+			throw new RuntimeException(ErrorMessages.FAILED_TO_READ_FILE + fileName + " : " + e.getMessage());
 		} finally {
 			try { if (br != null) br.close(); } catch (Exception e) {;}
 			try { if (fr != null) fr.close(); } catch (IOException e) {;}
@@ -55,7 +56,7 @@ public class TestStepLoader {
 		StringTokenizer tokenizer = new StringTokenizer(line, PARM_DELIMITER);
 		String command = tokenizer.nextToken();
 		if (command == null || command.length() == 0) {
-			throw new RuntimeException("Line : " + lineNo + ", Syntax error : Command is not specified.");
+			throw new RuntimeException(ErrorMessages.TESTSTEP_SYNTAX_ERROR + lineNo);
 		}
 
 		ExecutionStep step;
@@ -80,13 +81,13 @@ public class TestStepLoader {
 	private ExecutionStep validateSnapshotStep(int line, SnapShotStep step) {
 		String firstParm = (String) (step.getParms().size() > 0 ? step.getParms().get(0) : null);
 		if (firstParm == null || firstParm.length() ==0) {
-			throw new RuntimeException("Line : " + line + ",Syntax Error expected description post keyword for takeSnapShot");
+			throw new RuntimeException(ErrorMessages.TESTSTEP_SYNTAX_ERROR_SS_DESC  + line);
 		}
 		step.setDescription(((String)firstParm).trim());
 
 		String secondParm = (String) (step.getParms().size() > 1 ? step.getParms().get(1) : null);
 		if (secondParm == null) {
-			System.err.println("Line : " + line + ", Syntax Error expected fileName as second parameter for keyword takeSnapShot");
+			System.err.println("Syntax Error expected fileName as second parameter for keyword takeSnapShot, Line : " + line);
 			return null;
 		}
 		step.setFileName(((String)secondParm).trim());
@@ -101,7 +102,7 @@ public class TestStepLoader {
 
 			String fourthParm = (String)(step.getParms().size() > 3 ? step.getParms().get(3) : "");
 			if (fourthParm == null || fourthParm.length() == 0 ) {
-				throw new RuntimeException("Line : " + line + ", Syntax Error, Expected region definition.");
+				throw new RuntimeException(ErrorMessages.TESTSTEP_SYNTAX_ERROR_SS_RDEF + line);
 			}
 
 			StringTokenizer regionTokenizer = new StringTokenizer(fourthParm, REGION_DELIMITER);
@@ -135,7 +136,7 @@ public class TestStepLoader {
 
 			return new Rectangle(x,y,width,height);
 		} catch (NumberFormatException e) {
-			throw new RuntimeException("Line : " + line + ", Syntax Error in specifying region format [ xcord x ycord x width x height : xcord x ycord x width x height : ...]");
+			throw new RuntimeException(ErrorMessages.TESTSTEP_SYNTAX_ERROR_SS_REGF + line);
 		}
 	}
 }

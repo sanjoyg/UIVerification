@@ -12,7 +12,7 @@ public class TestSuitResult {
 	private long _endTime;
 
 	private HashMap<String,TestFileResult> _store = new HashMap<String,TestFileResult>();
-	private boolean isPass = true;
+	private boolean _isPass = true;
 
 	public TestSuitResult() {
 		_startTime = System.currentTimeMillis();
@@ -23,7 +23,7 @@ public class TestSuitResult {
 	}
 
 	public void addResult(String fileName, TestFileResult result) {
-		isPass = isPass & result.isPass();
+		_isPass = _isPass & result.isPass();
 		_store.put(fileName, result);
 	}
 
@@ -46,7 +46,7 @@ public class TestSuitResult {
 	public String json() {
 		String result = "{ \"testsuitresult\" : { ";
 
-		result += "\"pass\" : \"" + this.isPass + "\",";
+		result += "\"pass\" : \"" + this._isPass + "\",";
 		result += "\"startTime\" : \"" + this.getStartTime() + "\",";
 		result += "\"endTime\" : \"" + this.getEndTime() + "\",";
 
