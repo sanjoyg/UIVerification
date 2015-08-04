@@ -21,7 +21,7 @@
 
 <p>Set the JAR file in the CLASSPATH</p>
 
-<code>java org.sanjoy.uitest STORE config.file<code> </code>
+<p><code>java org.sanjoy.uitest STORE config.file</code> </p>
 
 <p><em>Configuration</em></p>
 
@@ -33,13 +33,13 @@
 <table border="1" cellpadding="0" cellspacing="0" height="1180" width="807">
 	<tbody>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p style="text-align: center;"><strong>Configuration Key</strong></p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p style="text-align: center;"><strong>Valid Values</strong></p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p style="text-align: center;"><strong>Mandatory/Optional</strong></p>
 			</td>
 			<td style="width:274px;">
@@ -47,13 +47,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p>uiverify.testfile</p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p>Path to a teststep file</p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p>Mandatory (if uiverify.testdir not specified)</p>
 			</td>
 			<td style="width:274px;">
@@ -61,13 +61,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p>uiverify.testdir</p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p>Path to a directory containing teststep files</p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p>Mandatory (if uiverify.testfile not specified)</p>
 			</td>
 			<td style="width:274px;">
@@ -77,13 +77,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p>uiverify.storedir</p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p>Path to a directory.</p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p>Mandatory</p>
 			</td>
 			<td style="width:274px;">
@@ -91,13 +91,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p>uiverify.comparedir</p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p>Path to a directory</p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p>Mandatory in COMPARE mode</p>
 			</td>
 			<td style="width:274px;">
@@ -105,13 +105,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p>uiverify.resultsdir</p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p>Path to a directory</p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p>Mandatory in COMPARE mode</p>
 			</td>
 			<td style="width:274px;">
@@ -119,13 +119,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p>uiverify.verbose</p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p>Boolean</p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p>Optional</p>
 
 			<p>Default : false</p>
@@ -135,13 +135,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p>uiverify.parallelize</p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p>Number</p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p>Optional</p>
 
 			<p>Default : 1</p>
@@ -151,13 +151,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p>uiverify.retainimgindiff</p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p>Boolean</p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p>Optional</p>
 
 			<p>Default: False</p>
@@ -167,13 +167,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p>uiverify.diffmarkcolor</p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p>Integer</p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p>Optional</p>
 
 			<p>Default: Gray Scale</p>
@@ -183,13 +183,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:110px;">
+			<td>
 			<p>uiverify.drawdiffrect</p>
 			</td>
-			<td style="width:101px;">
+			<td>
 			<p>Boolean</p>
 			</td>
-			<td style="width:150px;">
+			<td>
 			<p>Optional</p>
 
 			<p>Default: true</p>
@@ -432,7 +432,7 @@
 
 <p><strong><u>API</u></strong></p>
 
-<p>Read the source code and include as library :-)</p>
+<p>Read the source code and include as library</p>
 
 <p>&nbsp;</p>
 
