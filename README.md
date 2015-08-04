@@ -1,34 +1,34 @@
-<h1><span style="font-family:verdana,geneva,sans-serif;"><strong>UI Verification Tool</strong></span></h1>
+<h1><strong>UI Verification Tool</strong></h1>
 
 <hr />
-<p><span style="font-family:verdana,geneva,sans-serif;">During project life-cycle we used Selenium/Robotframework to automate functional test cases. While these tools did a fantastic job on testing the functional correctness of the site that was been developed, we had challenges around UI alignment or UI not been correct (such as header, footer) etc. This tool is a simple utility to test UI correctness of any site works on basic image recognition using snapshot of pages (via Selenium).</span></p>
+<p>During project life-cycle we used Selenium/Robotframework to automate functional test cases. While these tools did a fantastic job on testing the functional correctness of the site that was been developed, we had challenges around UI alignment or UI not been correct (such as header, footer) etc. This tool is a simple utility to test UI correctness of any site works on basic image recognition using snapshot of pages (via Selenium).</p>
 
-<p><span style="font-family:verdana,geneva,sans-serif;">The utility can work in a three modes</span></p>
+<p>The utility can work in a three modes</p>
 
 <ul>
-	<li><span style="font-family:verdana,geneva,sans-serif;">Test Driver</span></li>
-	<li><span style="font-family:verdana,geneva,sans-serif;">Standalone</span></li>
-	<li><span style="font-family:verdana,geneva,sans-serif;">API included in a framework</span></li>
+	<li>Test Driver</li>
+	<li>Standalone></li>
+	<li>API included in a framework</li>
 </ul>
 
-<p><span style="font-family:verdana,geneva,sans-serif;"><strong><u>Test Driver</u></strong></span></p>
+<p><strong><u>Test Driver</u></strong></p>
 
-<p><span style="font-family:verdana,geneva,sans-serif;">In this mode the program runs as a utility where it can drive a website using selenium. The commands are specified in a &ldquo;teststep&rdquo; file or a directory containing multiple &ldquo;teststep&rdquo; files which may be passed as a command line or in a configuration file. The run can be run in two modes.</span></p>
+<p>In this mode the program runs as a utility where it can drive a website using selenium. The commands are specified in a &ldquo;teststep&rdquo; file or a directory containing multiple &ldquo;teststep&rdquo; files which may be passed as a command line or in a configuration file. The run can be run in two modes.</p>
 
-<p><span style="font-family:verdana,geneva,sans-serif;">STORE&nbsp;&nbsp;&nbsp;&nbsp; : This is to create a baseline based on the &lsquo;teststeps&rsquo; file of pages that would need to be compared.</span></p>
+<p>STORE&nbsp;&nbsp;&nbsp;&nbsp; : This is to create a baseline based on the &lsquo;teststeps&rsquo; file of pages that would need to be compared.</p>
 
-<p><span style="font-family:verdana,geneva,sans-serif;">COMPARE: This is to run the same &lsquo;teststeps&rsquo; file to compare against the baseline images by the STORE run.</span></p>
+<p>COMPARE: This is to run the same &lsquo;teststeps&rsquo; file to compare against the baseline images by the STORE run.</p>
 
-<p><span style="font-family:verdana,geneva,sans-serif;">Set the JAR file in the CLASSPATH</span></p>
+<p>Set the JAR file in the CLASSPATH</p>
 
 <code>java org.sanjoy.uitest STORE config.file<code> </code>
 
-<p><span style="font-family:verdana,geneva,sans-serif;"><em>Configuration</em></span></p>
+<p><em>Configuration</em></p>
 
-<p><span style="font-family:verdana,geneva,sans-serif;">One mandatory command-line parameter is requires, which is the mode of the run. Which is either &ldquo;STORE&rdquo; or &ldquo;COMPARE&rdquo; (case in-sensitive), the operations of which are described above. The rest of the configuration parameters are specified in either as command line JVM argument using &ndash;D<em>key</em>=<em>value</em> or by specifying in the configuration file as a property file (<em>key=value</em>) format. The same configuration key can be specified as a JVM argument or configuration property key. For example</span></p>
+<p>One mandatory command-line parameter is requires, which is the mode of the run. Which is either &ldquo;STORE&rdquo; or &ldquo;COMPARE&rdquo; (case in-sensitive), the operations of which are described above. The rest of the configuration parameters are specified in either as command line JVM argument using &ndash;D<em>key</em>=<em>value</em> or by specifying in the configuration file as a property file (<em>key=value</em>) format. The same configuration key can be specified as a JVM argument or configuration property key. For example</p>
 
 <code>java Duiverify.verbose=true or in the configuration file specify ui.verbose=true</code>
-<p><span style="font-family:verdana,geneva,sans-serif;">If a key is passed as a JVM argument and also in the configuration file, the value defined in the configuration file overrides the value passed as a JVM argument.</span></p>
+<p>If a key is passed as a JVM argument and also in the configuration file, the value defined in the configuration file overrides the value passed as a JVM argument.</p>
 
 <table border="1" cellpadding="0" cellspacing="0" height="1180" width="807">
 	<tbody>
