@@ -74,15 +74,6 @@ public class TestFileRunner implements Runnable {
 			}
 
 		} catch (Throwable ex) {
-			if (Configuration.getInstance().isVerbose()) {
-				Throwable e = ex;
-				while(e.getCause() != null) {
-					System.err.println("SAN : " + e.getMessage());
-					e.getCause().printStackTrace();
-					e = ex.getCause();
-					System.err.println("SAN : " + e.getMessage());
-				}
-			}
 			throw new RuntimeException("Failed to compare images <" + storeImageFile + "> and <" + tempImageFile + "> : " + ex.getMessage());
 		}
 	}

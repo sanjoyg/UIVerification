@@ -132,14 +132,14 @@ public class Configuration {
 	private void setupCompareImageDir() {
 		String value = System.getProperty(STORE_IMAGE_DIR_KEY);
 		if (value == null || value.length()==0) {
-			throw new RuntimeException("Configuration file doesnt specify the property : " + STORE_IMAGE_DIR_KEY);
+			throw new RuntimeException(ErrorMessages.CONFIG_DEFINITION_MISSING + STORE_IMAGE_DIR_KEY);
 		}
 
 		setStoreImageDir(value);
 
 		value = System.getProperty(COMPARE_IMAGE_DIR_KEY);
 		if ((value == null || value.length()==0) && _runMode == RunMode.STANDALONE) {
-			throw new RuntimeException("Configuration file doesnt specify the property : " + COMPARE_IMAGE_DIR_KEY);
+			throw new RuntimeException(ErrorMessages.CONFIG_DEFINITION_MISSING  + COMPARE_IMAGE_DIR_KEY);
 		}
 		setCompareImageDir(value);
 
@@ -165,11 +165,11 @@ public class Configuration {
 			try {
 				setParallelThreads(Integer.parseInt(value));
 			} catch (NumberFormatException e) {
-				System.err.println("Warning: Incorrect threads number specific : <" + value +">, setting to : 1");
+				System.err.println(ErrorMessages.WARN_INCORRECT_THREAD_DEFN + value);
 				setParallelThreads(1);
 			}
 			if (getParallelThreads() <=0) {
-				System.err.println("Warning: Incorrect threads number specific : <" + value +">, setting to : 1");
+				System.err.println(ErrorMessages.WARN_INCORRECT_THREAD_DEFN + value);
 				setParallelThreads(1);
 			}
 		}
@@ -179,7 +179,7 @@ public class Configuration {
 		_reportDir = System.getProperty(RESULTS_DIR_KEY);
 
 		if ((_reportDir  == null || _reportDir .length() == 0) && _runMode == RunMode.COMPARE)
-			throw new RuntimeException("Command line must specify the property : " + RESULTS_DIR_KEY);
+			throw new RuntimeException(ErrorMessages.CONFIG_DEFINITION_MISSING + RESULTS_DIR_KEY);
 
 		String reportDirNameDerived = _reportDir + File.separatorChar + (dirDateFormat.format(new Date()));
 
@@ -194,21 +194,21 @@ public class Configuration {
 				_reportDir = null;
 			}
 			if (_reportDir == null) {
-				throw new RuntimeException("Failed to create report dir, tried : " + reportDirNameDerived +"-0 to " + reportDirNameDerived + "-999");
+				throw new RuntimeException(ErrorMessages.ERROR_CREATING_DIR + reportDirNameDerived +"-0 : " + reportDirNameDerived + "-999");
 			}
 		} else {
 			_reportDir = reportDirNameDerived;
 		}
 
 		if (!dirToCreate.mkdirs()) {
-			throw new RuntimeException("Failed to create report dir : " + dirToCreate.getName());
+			throw new RuntimeException(ErrorMessages.ERROR_CREATING_DIR + dirToCreate.getName());
 		}
 
 		_reportImagesDir = _reportDir + File.separatorChar + "images";
 		File imagesDirObj = new File(_reportImagesDir);
 		if (!imagesDirObj.isDirectory()) {
 			if (!imagesDirObj.mkdirs()) {
-				throw new RuntimeException("Failed to create images dir in results : " + _reportImagesDir);
+				throw new RuntimeException(ErrorMessages.ERROR_CREATING_DIR  + _reportImagesDir);
 			}
 		}
 	}
@@ -221,11 +221,11 @@ public class Configuration {
 		if (!storeImageDir.isDirectory()) {
 			// Store Image dir required in COMPARE & STANDALONE mode
 			if (getRunMode() != RunMode.STORE) {
-				throw new RuntimeException("Stored Image Directory doesnt exist.: " + _storeImageDir);
+				throw new RuntimeException(ErrorMessages.IMAGE_DIR_DOESNT_EXIST  + _storeImageDir);
 			}
 			// In STORE mode create the directory if doesnt exist
 			if (!storeImageDir.mkdir()) {
-				throw new RuntimeException("Failed to make stored Image directory : " + _storeImageDir);
+				throw new RuntimeException(ErrorMessages.ERROR_CREATING_DIR + _storeImageDir);
 			}
 		}
 
@@ -233,11 +233,11 @@ public class Configuration {
 			File compareImageDir = new File(_compareImageDir);
 			if (!compareImageDir.isDirectory() && getRunMode() != RunMode.STORE) {
 				if (getRunMode() == RunMode.STANDALONE) {
-					throw new RuntimeException("Compare Image Directory doesnt exist.: " + _compareImageDir);
+					throw new RuntimeException(ErrorMessages.COMPARE_DIR_DOESN_EXIST + _compareImageDir);
 				}
 
 				if (!compareImageDir.mkdir()) {
-					throw new RuntimeException("Failed to make comparison Image directory : " + _compareImageDir);
+					throw new RuntimeException(ErrorMessages.ERROR_CREATING_DIR + _compareImageDir);
 				}
 			}
 		}
