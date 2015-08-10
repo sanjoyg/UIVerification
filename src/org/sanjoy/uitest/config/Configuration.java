@@ -11,8 +11,6 @@ import org.sanjoy.uitest.imaging.ImageVerifierConfig;
 
 public class Configuration {
 
-	private static Configuration _instance = null;
-
 	public static String TEST_STEP_FILE_KEY 			= "uiverify.testfile";
 	public static String TEST_STEP_DIR_KEY 				= "uiverify.testdir";
 	public static String STORE_IMAGE_DIR_KEY 			= "uiverify.storedir";
@@ -34,26 +32,31 @@ public class Configuration {
 	private String _testStepDir = null;
 	private String _reportDir = null;
 	private String _reportImagesDir = null;
-	private RunMode _runMode;
+	private RunMode _runMode = null;
 	private boolean _verbose = false;
 	private int		_threads = 1;
 
 	private static SimpleDateFormat dirDateFormat = new SimpleDateFormat("yyyyMMdd-HHmm");
 
-	public static Configuration getInstance() {
-		if (_instance == null)
-			_instance = new Configuration();
-		return _instance;
-	}
+	public Configuration() {;}
 
-	private Configuration() {;}
+	public void reset() {
+		_runMode = null;
+		_verbose = false;
+		_threads = 1;
+		_storeImageDir = null;
+		_compareImageDir = null;
+		_testStepFile = null;
+		_testStepDir = null;
+		_reportDir = null;
+		_reportImagesDir = null;
+	}
 
 	public void processCommandLine(String [] args) {
 		if (args == null || args.length == 0)
 			throw new RuntimeException(ErrorMessages.TOOL_USAGE);
 
 		setupRunMode(args);
-
 		checkAndLoadConfig(args);
 
 		if ( _runMode != RunMode.STANDALONE)
@@ -86,7 +89,7 @@ public class Configuration {
 	}
 
 	private void checkAndLoadConfig(String[] args) {
-		if (args == null || args.length <=1)
+		if (args == null || args.length <=1 || args[1] == null || args[1].length() == 0)
 			return;
 		String value = args[1];
 
@@ -96,7 +99,7 @@ public class Configuration {
 			fis = new FileInputStream(value);
 			configProps.load(fis);
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to load config file : " + value);
+			throw new RuntimeException(ErrorMessages.FAILED_LOADING_CONFIG_FILE + value);
 		} finally {
 			try { if (fis != null) fis.close(); } catch(Exception e) {;}
 		}

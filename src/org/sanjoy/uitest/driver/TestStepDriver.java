@@ -25,11 +25,12 @@ import org.sanjoy.uitest.config.RunMode;
 
 public class TestStepDriver {
 
-	private WebDriver driver;
+	private WebDriver _driver;
+	private BrowserName _driverName;
+	private Configuration _config;
 
-	BrowserName driverName;
-
-	public TestStepDriver() {
+	public TestStepDriver(Configuration config) {
+		_config = config;
 	}
 
 	public void takeSnapShot(String desc, String fileName, String include, String regions) {
@@ -38,20 +39,20 @@ public class TestStepDriver {
 
 	public void takeSnapShot(String desc, String fileName) {
 
-		Configuration config = Configuration.getInstance();
+		//Configuration config = Configuration.getInstance();
 
-		String dirToCopy = (config.getRunMode() == RunMode.STORE ? config.getStoreImageDir() : config.getCompareImageDir());
+		String dirToCopy = (_config.getRunMode() == RunMode.STORE ? _config.getStoreImageDir() : _config.getCompareImageDir());
 
 		String copyToFileName = dirToCopy + File.separatorChar + fileName;
 
 		File imageFile = null;
 
-		if (driverName == BrowserName.FIREFOX) {
-			imageFile = (File) ((FirefoxDriver)driver).getScreenshotAs(OutputType.FILE);
-		} else if (driverName == BrowserName.CHROME)  {
-			imageFile = (File) ((ChromeDriver)driver).getScreenshotAs(OutputType.FILE);
-		} else if (driverName == BrowserName.IE) {
-			imageFile = (File) ((InternetExplorerDriver)driver).getScreenshotAs(OutputType.FILE);
+		if (_driverName == BrowserName.FIREFOX) {
+			imageFile = (File) ((FirefoxDriver)_driver).getScreenshotAs(OutputType.FILE);
+		} else if (_driverName == BrowserName.CHROME)  {
+			imageFile = (File) ((ChromeDriver)_driver).getScreenshotAs(OutputType.FILE);
+		} else if (_driverName == BrowserName.IE) {
+			imageFile = (File) ((InternetExplorerDriver)_driver).getScreenshotAs(OutputType.FILE);
 		}
 
 		try {
@@ -62,27 +63,27 @@ public class TestStepDriver {
 	}
 
 	public void scrollToBottom() {
-		if (driverName == BrowserName.FIREFOX) {
-			((FirefoxDriver)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		} else if (driverName == BrowserName.CHROME)  {
-			((ChromeDriver)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		} else if (driverName == BrowserName.IE) {
-			((InternetExplorerDriver)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+		if (_driverName == BrowserName.FIREFOX) {
+			((FirefoxDriver)_driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+		} else if (_driverName == BrowserName.CHROME)  {
+			((ChromeDriver)_driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+		} else if (_driverName == BrowserName.IE) {
+			((InternetExplorerDriver)_driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 		}
 	}
 
 	public void scrollToTop() {
-		if (driverName == BrowserName.FIREFOX) {
-			((FirefoxDriver)driver).executeScript("window.scrollTo(0, 0)");
-		} else if (driverName == BrowserName.CHROME)  {
-			((ChromeDriver)driver).executeScript("window.scrollTo(0, 0)");
-		} else if (driverName == BrowserName.IE) {
-			((InternetExplorerDriver)driver).executeScript("window.scrollTo(0, 0)");
+		if (_driverName == BrowserName.FIREFOX) {
+			((FirefoxDriver)_driver).executeScript("window.scrollTo(0, 0)");
+		} else if (_driverName == BrowserName.CHROME)  {
+			((ChromeDriver)_driver).executeScript("window.scrollTo(0, 0)");
+		} else if (_driverName == BrowserName.IE) {
+			((InternetExplorerDriver)_driver).executeScript("window.scrollTo(0, 0)");
 		}
 	}
 
 	public void maximize() {
-		driver.manage().window().maximize();
+		_driver.manage().window().maximize();
 	}
 
 	public void openBrowser(String browserName) {
@@ -92,17 +93,17 @@ public class TestStepDriver {
 	public void openBrowser(String browserName, String hostPort) {
 		try {
 			if (browserName.equalsIgnoreCase("Firefox")) {
-				driver = new FirefoxDriver();
-				driverName = BrowserName.FIREFOX;
+				_driver = new FirefoxDriver();
+				_driverName = BrowserName.FIREFOX;
 			} else if (browserName.equalsIgnoreCase("chrome")) {
-				driver = new ChromeDriver();
-				driverName = BrowserName.CHROME;
+				_driver = new ChromeDriver();
+				_driverName = BrowserName.CHROME;
 			} else if (browserName.equalsIgnoreCase("IE")) {
-				driver = new InternetExplorerDriver();
-				driverName = BrowserName.IE;
+				_driver = new InternetExplorerDriver();
+				_driverName = BrowserName.IE;
 			} else if (browserName.equalsIgnoreCase("remote")) {
 				try {
-					driver = new RemoteWebDriver(new URL(hostPort), new DesiredCapabilities());
+					_driver = new RemoteWebDriver(new URL(hostPort), new DesiredCapabilities());
 				} catch (MalformedURLException e) {
 					throw new RuntimeException("Error executing keyword OpenBrowser , browser name (" + browserName + ") : " + e.getMessage());
 				}
@@ -113,7 +114,7 @@ public class TestStepDriver {
 	}
 
 	public void enterURL(String URL) {
-		driver.navigate().to(URL);
+		_driver.navigate().to(URL);
 	}
 
 	public By locatorValue(String locatorType, String value) {
@@ -151,7 +152,7 @@ public class TestStepDriver {
 		try {
 			By locator;
 			locator = locatorValue(locatorType, value);
-			WebElement element = driver.findElement(locator);
+			WebElement element = _driver.findElement(locator);
 			Select dropdown = new Select(element);
 			dropdown.selectByVisibleText(text);
 		} catch (NoSuchElementException e) {
@@ -164,7 +165,7 @@ public class TestStepDriver {
 		try {
 			By locator;
 			locator = locatorValue(locatorType, value);
-			WebElement element = driver.findElement(locator);
+			WebElement element = _driver.findElement(locator);
 			element.clear();
 			element.sendKeys(text);
 		} catch (NoSuchElementException e) {
@@ -177,7 +178,7 @@ public class TestStepDriver {
 		try {
 			By locator;
 			locator = locatorValue(locatorType, value);
-			WebElement element = driver.findElement(locator);
+			WebElement element = _driver.findElement(locator);
 			element.click();
 		} catch (NoSuchElementException e) {
 			throw new RuntimeException("No Link/Button Found click: locatorType[" + locatorType + "] value[" + value +"]" + e);
@@ -189,7 +190,7 @@ public class TestStepDriver {
 	}
 
 	public void closeBrowser() {
-		driver.quit();
+		_driver.quit();
 	}
 
 	public void sleep(String time) {
@@ -198,7 +199,7 @@ public class TestStepDriver {
 	}
 
 	public void execute(String strMethodName, Object... inputArgs) {
-		boolean isVerbose = Configuration.getInstance().isVerbose();
+		boolean isVerbose = _config.isVerbose();
 
 		if (isVerbose) {
 			System.err.println("Invoking : " + strMethodName + " using : " );
@@ -232,7 +233,7 @@ public class TestStepDriver {
 	}
 
 	public void tearDown() {
-		if (driver != null)
-			driver.quit();
+		if (_driver != null)
+			_driver.quit();
 	}
 }

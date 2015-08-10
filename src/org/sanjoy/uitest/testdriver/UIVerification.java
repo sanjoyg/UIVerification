@@ -16,6 +16,8 @@ import org.sanjoy.uitest.result.writer.TestResultWriter;
 
 public class UIVerification {
 
+	private Configuration _config;
+
 	public static void main(String[] args) {
 		new UIVerification().start(args);
 	}
@@ -27,17 +29,17 @@ public class UIVerification {
 		System.err.println("Starting...");
 
 		try {
-			Configuration config = Configuration.getInstance();
-			config.processCommandLine(args);
+			_config = new Configuration();
+			_config.processCommandLine(args);
 
 			TestSuitResult testSuitResult = new TestSuitResult();
 
 			ArrayList<String> filesToRun = getFilesToRun();
-			int numberOfThreads = (filesToRun.size() > config.getParallelThreads()? config.getParallelThreads() : filesToRun.size());
+			int numberOfThreads = (filesToRun.size() > _config.getParallelThreads()? _config.getParallelThreads() : filesToRun.size());
 			ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
 
 			for (String testFile : filesToRun) {
-				TestFileRunner runner = new TestFileRunner(config.getRunMode(),testSuitResult,testFile);
+				TestFileRunner runner = new TestFileRunner(_config,testSuitResult,testFile);
 				executorService.execute(runner);
 			}
 
@@ -48,13 +50,12 @@ public class UIVerification {
 
 			testSuitResult.setEndTime();
 
-			if (config.getRunMode() != RunMode.STORE) {
+			if (_config.getRunMode() != RunMode.STORE) {
 				System.err.println("Writing Results...");
-				new TestResultWriter().write(testSuitResult);
+				new TestResultWriter(_config).write(testSuitResult);
 			}
 		} catch (RuntimeException rex) {
 			System.err.println(rex.getMessage());
-			if (Configuration.getInstance().isVerbose()) rex.printStackTrace();
 		} finally {
 			tearDown();
 			System.err.println("Complete.");
@@ -63,11 +64,11 @@ public class UIVerification {
 
 	private ArrayList<String> getFilesToRun() {
 		ArrayList<String> files = new ArrayList<String>();
-		if (Configuration.getInstance().getTestStepFile() != null) {
+		if (_config.getTestStepFile() != null) {
 			files = new ArrayList<String>();
-			files.add(Configuration.getInstance().getTestStepFile());
+			files.add(_config.getTestStepFile());
 		} else {
-			files = getFilesInDir(Configuration.getInstance().getTestStepDir());
+			files = getFilesInDir(_config.getTestStepDir());
 		}
 		return files;
 	}
@@ -82,8 +83,8 @@ public class UIVerification {
 	}
 	private void tearDown() {
 		try {
-			if (Configuration.getInstance().getCompareImageDir() != null)
-				FileUtils.deleteDirectory(new File(Configuration.getInstance().getCompareImageDir()));
+			if (_config.getCompareImageDir() != null)
+				FileUtils.deleteDirectory(new File(_config.getCompareImageDir()));
 		} catch (IOException e) {
 			System.err.println("Warning: failed to clear temp directory.");
 		}

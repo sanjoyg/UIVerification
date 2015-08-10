@@ -17,8 +17,13 @@ import org.sanjoy.uitest.result.TestSuitResult;
 
 // Horrible way to do it, ran out of patience to use free-marker
 public class TestResultWriter {
-
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
+
+	private Configuration _config = null;
+
+	public TestResultWriter(Configuration config) {
+		_config = config;
+	}
 
 	public void write(TestSuitResult results) {
 
@@ -48,10 +53,9 @@ public class TestResultWriter {
 				boolean isPass = result.isPass();
 				report = report + "\n\t\t\t\t\t<td class=\"" + (isPass?"green":"red") + "\">"+ (isPass?"Pass":"Fail");
 				if (!isPass) {
-					Configuration config = Configuration.getInstance();
-					String baseImg= moveImageAndReturnRelPath("base_",result.getBaseImage(),config.getStoreImageDir());
-					String compareImg = moveImageAndReturnRelPath("compare_",result.getCompareToImage(),config.getCompareImageDir());
-					String diffImg = moveImageAndReturnRelPath("diff_",result.getDiffImage(),config.getCompareImageDir());
+					String baseImg= moveImageAndReturnRelPath(_config.getReportImagesDir(), "base_",result.getBaseImage(),_config.getStoreImageDir());
+					String compareImg = moveImageAndReturnRelPath(_config.getReportImagesDir(),"compare_",result.getCompareToImage(),_config.getCompareImageDir());
+					String diffImg = moveImageAndReturnRelPath(_config.getReportImagesDir(),"diff_",result.getDiffImage(),_config.getCompareImageDir());
 
 					report = report + "&nbsp;&nbsp" + result.getFailureCount() + " Failures : " + result.getDiffPercent();
 					report = report + "&nbsp;&nbsp;";
@@ -69,7 +73,7 @@ public class TestResultWriter {
 		report = report + "\n\t\t</div>";
 		report = report + "\n\t</body>\n</html>";
 
-		String reportFileName = Configuration.getInstance().getReportDir() + File.separatorChar + "result.html";
+		String reportFileName = _config .getReportDir() + File.separatorChar + "result.html";
 
 		FileWriter fw = null;
 		BufferedWriter bw = null;
@@ -85,9 +89,9 @@ public class TestResultWriter {
 		}
 	}
 
-	private String moveImageAndReturnRelPath(String prefix, String srcPath, String basePath) {
+	private String moveImageAndReturnRelPath(String reportImagesDir, String prefix, String srcPath, String basePath) {
 		String destPath = prefix + srcPath.substring(basePath.length()+1);
-		String moveDestPath = Configuration.getInstance().getReportImagesDir() + File.separatorChar + destPath;
+		String moveDestPath = reportImagesDir + File.separatorChar + destPath;
 		try {
 			FileUtils.copyFile(new File(srcPath), new File(moveDestPath));
 		} catch (IOException e) {
