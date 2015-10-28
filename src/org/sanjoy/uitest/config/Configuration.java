@@ -18,12 +18,14 @@ public class Configuration {
 	public static String RESULTS_DIR_KEY 				= "uiverify.resultsdir";
 	public static String VERBOSE_KEY 					= "uiverify.verbose";
 	public static String PARALLEL_THREADS 				= "uiverify.parallelize";
+	public static String WEB_CONTEXT					= "uiverify.webcontext";
+	public static String REPORT_TEMPLATE				= "uiverify.reporttempl";
 
 	public static String YES_STR				= "YES";
 	public static String TRUE_STR				= "TRUE";
 	public static String STORE_STR				= "STORE";
 	public static String COMPARE_STR			= "COMPARE";
-	public static String STANDALONE_STR		= "STANDALONE";
+	public static String STANDALONE_STR			= "STANDALONE";
 	private static String DEFAULT_COMPARE_DIR	= "_temp";
 
 	private String _storeImageDir = null;
@@ -35,6 +37,8 @@ public class Configuration {
 	private RunMode _runMode = null;
 	private boolean _verbose = false;
 	private int		_threads = 1;
+	private String _webContext = "."; //Default
+	private String _reportTemplate = null;
 
 	private static SimpleDateFormat dirDateFormat = new SimpleDateFormat("yyyyMMdd-HHmm");
 
@@ -50,6 +54,8 @@ public class Configuration {
 		_testStepDir = null;
 		_reportDir = null;
 		_reportImagesDir = null;
+		_webContext = ".";
+		_reportTemplate = null;
 	}
 
 	public void processCommandLine(String [] args) {
@@ -70,6 +76,8 @@ public class Configuration {
 			setupReportDir();
 
 		ImageVerifierConfig.setupImageVerificationProps();
+
+		setupReportingParms();
 	}
 
 	private void setupRunMode(String[] args) {
@@ -176,6 +184,18 @@ public class Configuration {
 				setParallelThreads(1);
 			}
 		}
+	}
+
+	private void setupReportingParms() {
+		String webContext = System.getProperty(WEB_CONTEXT);
+		if (webContext != null && webContext.length() != 0)
+			setWebContext(webContext);
+
+		String reportTemplate = System.getProperty(REPORT_TEMPLATE);
+
+		if (reportTemplate == null || reportTemplate.length() == 0 || !(new File(reportTemplate).isFile()))
+			throw new RuntimeException(ErrorMessages.INVALID_REPORT_TEMPL_FILE + reportTemplate);
+		setReportTemplate(reportTemplate);
 	}
 
 	private void setupReportDir() {
@@ -304,5 +324,21 @@ public class Configuration {
 
 	public int getParallelThreads() {
 		return _threads;
+	}
+
+	public String getWebContext() {
+		return _webContext;
+	}
+
+	public void setWebContext(String webContext) {
+		_webContext = webContext;
+	}
+
+	public void setReportTemplate(String reportTemplate) {
+		_reportTemplate = reportTemplate;
+	}
+
+	public String getReportTemplate() {
+		return _reportTemplate;
 	}
 }

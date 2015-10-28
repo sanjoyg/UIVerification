@@ -32,34 +32,41 @@ public class UIVerification {
 			_config = new Configuration();
 			_config.processCommandLine(args);
 
-			TestSuitResult testSuitResult = new TestSuitResult();
-
-			ArrayList<String> filesToRun = getFilesToRun();
-			int numberOfThreads = (filesToRun.size() > _config.getParallelThreads()? _config.getParallelThreads() : filesToRun.size());
-			ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
-
-			for (String testFile : filesToRun) {
-				TestFileRunner runner = new TestFileRunner(_config,testSuitResult,testFile);
-				executorService.execute(runner);
-			}
-
-			executorService.shutdown();
-
-			try { executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);}
-			catch (InterruptedException e) {;}
-
-			testSuitResult.setEndTime();
+			TestSuitResult testSuitResult = executeTest();
 
 			if (_config.getRunMode() != RunMode.STORE) {
 				System.err.println("Writing Results...");
 				new TestResultWriter(_config).write(testSuitResult);
 			}
+
 		} catch (RuntimeException rex) {
 			System.err.println(rex.getMessage());
 		} finally {
 			tearDown();
 			System.err.println("Complete.");
 		}
+	}
+
+	private TestSuitResult executeTest() {
+		TestSuitResult testSuitResult = new TestSuitResult();
+
+		ArrayList<String> filesToRun = getFilesToRun();
+		int numberOfThreads = (filesToRun.size() > _config.getParallelThreads()? _config.getParallelThreads() : filesToRun.size());
+		ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
+
+		for (String testFile : filesToRun) {
+			TestFileRunner runner = new TestFileRunner(_config,testSuitResult,testFile);
+			executorService.execute(runner);
+		}
+
+		executorService.shutdown();
+
+		try {
+			executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);}
+		catch (InterruptedException e) {;}
+
+		testSuitResult.setEndTime();
+		return testSuitResult;
 	}
 
 	private ArrayList<String> getFilesToRun() {

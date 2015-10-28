@@ -1,13 +1,11 @@
 package org.sanjoy.uitest.result;
 
-import java.awt.Rectangle;
-import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
-import org.sanjoy.uitest.imaging.ImageVerifierResult;
-
 public class TestSuitResult {
-
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
 	private long _startTime;
 	private long _endTime;
 
@@ -43,55 +41,22 @@ public class TestSuitResult {
 		_endTime = System.currentTimeMillis();
 	}
 
-	public String json() {
-		String result = "{ \"testsuitresult\" : { ";
+	public String toJSON() {
+		String json = "{ \"testSuiteResult\" : { ";
 
-		result += "\"pass\" : \"" + this._isPass + "\",";
-		result += "\"startTime\" : \"" + this.getStartTime() + "\",";
-		result += "\"endTime\" : \"" + this.getEndTime() + "\",";
+		json += "\"pass\" : \"" + (this._isPass ? "Pass":"Fail") + "\",";
+		json += "\"startTime\" : \"" + dateFormat.format(new Date(this.getStartTime())) + "\",";
+		json += "\"endTime\" : \"" + dateFormat.format(new Date(this.getEndTime())) + "\",";
 
-		result += "\"suitresults\" : [";
+		json += "\"suiteResults\" : [";
 
 		for (String fileName : this.getResults().keySet()) {
-			TestFileResult fileResult = this.getResults().get(fileName);
-
-			result += "{\"file\" : \"" + fileName + "\",";
-			result += "\"pass\" :\"" + fileResult.isPass() + "\",";
-			result += "\"fileresults\" : [";
-
-			for (ImageVerifierResult imageResult : fileResult.getResults()) {
-				if (!result.endsWith("["))
-					result += ",";
-				result += "{";
-				result += "\"stepResult\" : {";
-				result += "\"description\": \"" + new File(imageResult.getDescription()).toURI() + "\",";
-				result += "\"pass\" : \"" + imageResult.isPass() + "\",";
-				result += "\"baseImage\" : \"" + new File(imageResult.getBaseImage()).toURI() + "\",";
-				result += "\"compareImage\" : \"" + new File(imageResult.getCompareToImage()).toURI() + "\",";
-				result += "\"diffImage\" : \"" + new File(imageResult.getDiffImage()).toURI() + "\",";
-				result += "\"failureCount\": \"" + imageResult.getFailureCount() + "\",";
-				result += "\"diffPercent\": \"" + imageResult.getDiffPercent() + "\",";
-
-				if (imageResult.getDiffRects() != null || imageResult.getDiffRects().size() == 0) {
-					result += "\"diffRects\" : [";
-					for (Rectangle diffRect : imageResult.getDiffRects()) {
-						if (!result.endsWith("["))
-							result += ",";
-						result += " {";
-						result += "\"x\":\"" + diffRect.x + "\",";
-						result += "\"y\":\"" + diffRect.y + "\",";
-						result += "\"width\":\"" + diffRect.width + "\",";
-						result += "\"height\":\"" + diffRect.height + "\"";
-						result += "}";
-					}
-					result += "]";
-				}
-				result += "}";
-			}
-			result += "}]";
+			if (!json.endsWith("["))
+				json += ",";
+			json += this.getResults().get(fileName).toJSON();
 		}
-		result += "}] ";
-		result += "}}";
-		return result;
+
+		json += "]}}";
+		return json;
 	}
 }

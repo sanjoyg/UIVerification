@@ -15,9 +15,12 @@ import org.sanjoy.uitest.imaging.ImageVerifierResult;
 import org.sanjoy.uitest.result.TestFileResult;
 import org.sanjoy.uitest.result.TestSuitResult;
 
-// Horrible way to do it, ran out of patience to use free-marker
 public class TestResultWriter {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
+	private final static String RESULT_FILE_NAME = "result.html";
+	private final static String WEB_CONTEXT_KEY = "#WEB_CONTEXT#";
+	private final static String JSON_KEY = "#INSERT_JSON#";
+	private final static String IMAGES_DIR = "images";
 
 	private Configuration _config = null;
 
@@ -26,67 +29,51 @@ public class TestResultWriter {
 	}
 
 	public void write(TestSuitResult results) {
-
-		String report = writePrologue();
-
-		report = report + "\n\t\t\t<div class=\"header\"><h1>UI Comparison Report</h1></div>";
-		report = report + "\n\t\t\t<h2>Start : " + dateFormat.format(new Date(results.getStartTime())) +
-								"&nbsp;&nbsp;&nbsp;End : " + dateFormat.format(new Date(results.getEndTime())) + "</h2>";
-
-
-		report = report + "\n\t\t\t<table class=\"grid\" width=\"100%\">";
-		report = report + "\n\t\t\t\t<caption>Test Results</caption>";
-		report = report + "\n\t\t\t\t<tbody>";
-
+		String resultFileName = _config.getReportDir() + File.separatorChar + RESULT_FILE_NAME;
+		String resultFileNameTemp = resultFileName + ".temp";
+		try {
+			FileUtils.copyFile(new File(_config.getReportTemplate()), new File(resultFileNameTemp));
+		} catch (IOException e) {
+			throw new RuntimeException(ErrorMessages.ERROR_WRITING_RESULT + resultFileNameTemp + " : " + e.getMessage());
+		}
 
 		Iterator<String> resultsIter = results.getResults().keySet().iterator();
 
-		int count = 0;
+		String imagesPrefix = IMAGES_DIR + "/";
+
 		while (resultsIter.hasNext()) {
 			TestFileResult store = results.getResults().get(resultsIter.next());
-
 			for (ImageVerifierResult result: store.getResults()) {
-				count++;
-				report = report + "\n\t\t\t\t\t<tr>";
-				report = report + "\n\t\t\t\t\t<td>" +  count + "</td>";
-				report = report + "\n\t\t\t\t\t<td>" +  result.getDescription() + "</td>";
-				boolean isPass = result.isPass();
-				report = report + "\n\t\t\t\t\t<td class=\"" + (isPass?"green":"red") + "\">"+ (isPass?"Pass":"Fail");
-				if (!isPass) {
-					String baseImg= moveImageAndReturnRelPath(_config.getReportImagesDir(), "base_",result.getBaseImage(),_config.getStoreImageDir());
-					String compareImg = moveImageAndReturnRelPath(_config.getReportImagesDir(),"compare_",result.getCompareToImage(),_config.getCompareImageDir());
-					String diffImg = moveImageAndReturnRelPath(_config.getReportImagesDir(),"diff_",result.getDiffImage(),_config.getCompareImageDir());
-
-					report = report + "&nbsp;&nbsp" + result.getFailureCount() + " Failures : " + result.getDiffPercent();
-					report = report + "&nbsp;&nbsp;";
-					report = report + "<a href=\"images/" + baseImg + "\" target=\"_blank\">Baseline</a>&nbsp;&nbsp;";
-					report = report + "<a href=\"images/" + compareImg + "\" target=\"_blank\">Compare To</a>&nbsp;&nbsp;";
-					report = report + "<a href=\"images/" + diffImg + "\" target=\"_blank\">Difference</a>";
-				}
-				report = report + "</td>";
-				report = report + "\n\t\t\t\t\t</tr>";
+				String baseImg= moveImageAndReturnRelPath(_config.getReportImagesDir(), "base_",result.getBaseImage(),_config.getStoreImageDir());
+				String compareImg = moveImageAndReturnRelPath(_config.getReportImagesDir(),"compare_",result.getCompareToImage(),_config.getCompareImageDir());
+				String diffImg = moveImageAndReturnRelPath(_config.getReportImagesDir(),"diff_",result.getDiffImage(),_config.getCompareImageDir());
+				result.setBaseImage(imagesPrefix + baseImg);
+				result.setCompareToImage(imagesPrefix + compareImg);
+				result.setDiffImage(imagesPrefix + diffImg);
 			}
 		}
+		injectVariablesAndSave(resultFileNameTemp,resultFileName, results.toJSON());
+	}
 
-		report = report + "\n\t\t\t\t</tbody>";
-		report = report + "\n\t\t\t</table>";
-		report = report + "\n\t\t</div>";
-		report = report + "\n\t</body>\n</html>";
+	private void injectVariablesAndSave(String from, String to, String json) {
+		String templ = null;
 
-		String reportFileName = _config .getReportDir() + File.separatorChar + "result.html";
-
-		FileWriter fw = null;
-		BufferedWriter bw = null;
 		try {
-			bw = new BufferedWriter(new FileWriter(new File(reportFileName)));
-			bw.write(report);
-			bw.flush();
+			templ = FileUtils.readFileToString(new File(from));
 		} catch (IOException e) {
-			throw new RuntimeException(ErrorMessages.ERROR_WRITING_RESULT + reportFileName + " : " + e.getMessage());
-		} finally {
-			try { if (bw != null) bw.close(); } catch (Exception ex) {}
-			try { if (fw != null) fw.close(); } catch (Exception ex) {}
+			throw new RuntimeException(ErrorMessages.INVALID_REPORT_TEMPL_FILE + from);
 		}
+
+		templ = templ.replaceAll(WEB_CONTEXT_KEY, _config.getWebContext());
+		templ = templ.replaceAll(JSON_KEY, json);
+
+		try {
+			FileUtils.writeStringToFile(new File(to), templ);
+		} catch (IOException e) {
+			throw new RuntimeException(ErrorMessages.ERROR_WRITING_RESULT + to + " : " + e.getMessage());
+		}
+
+		FileUtils.deleteQuietly(new File(from));
 	}
 
 	private String moveImageAndReturnRelPath(String reportImagesDir, String prefix, String srcPath, String basePath) {
@@ -99,32 +86,5 @@ public class TestResultWriter {
 			System.err.println(ErrorMessages.WARN_COPYING_IMAGE + srcPath + " --> : " + moveDestPath);
 		}
 		return destPath;
-	}
-
-	private String writePrologue() {
-		String report ="<html>\n\t<head>";
-
-		report = report + "	<style type=\"text/css\">";
-		report = report + "	*{margin: 0; padding: 0;}";
-		report = report + "	body{ font-family: 'Calibri'; color: #111; background: #aaa; }";
-		report = report + "	.container{ width: 75%; margin: 0 auto; }";
-		report = report + "	h1{ font-size: 30px; color: #069; padding: 10px; background:#f8f8f8; text-align: center; border:#ddd 1px solid; text-transform: uppercase; }";
-		report = report + "	h2{ font-size: 18px; margin-top: 10px; color: #333; padding: 10px; text-align: center; background:#f8f8f8; border:#ddd 1px solid; }";
-		report = report + "	.summary{ font-size: 18px; color: #444; padding: 10px; background:#f8f8f8; margin: 10px 0px; border:#ddd 1px solid; }";
-		report = report + "	.summary h3{ font-size: 14px; font-weight: bold; }";
-		report = report + "	.summary p{ font-size: 14px; }";
-		report = report + "	.grid{ min-width: 40%; border-collapse: collapse; background: #fff; }";
-		report = report + "	.grid caption{ padding: 5px; background: #222; color: #eee; }";
-		report = report + "	.grid tbody tr:nth-child(even){ background: #f5f5f5; }";
-		report = report + "	.grid th,.grid td{ padding: 5px 10px; border: #ccc 1px solid; }";
-		report = report + "	.grid tbody tr td{text-align: center;}";
-		report = report + "	.success{background: #f00}";
-		report = report + "	.error{background: #f2521b}";
-		report = report + "	.grid .red{color: #ff0000;}";
-		report = report + "	.grid .green{color: #009900;}";
-		report = report + "	</style>";
-		report = report + "\n\t</head>";
-		report = report + "\n\t<body>\n\t\t<div class=\"container\">";
-		return report;
 	}
 }

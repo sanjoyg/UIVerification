@@ -26,4 +26,5 @@ public interface ErrorMessages {
 	public static String WARN_COPYING_IMAGE				= "Warning : could not copy image file from : ";
 	public static String ERROR_WRITING_RESULT			= "Failed to write report file : ";
 	public static String FAILED_LOADING_CONFIG_FILE		= "Failed to load config file : ";
+	public static String INVALID_REPORT_TEMPL_FILE		= "Failed to find the report template file specified : ";
 }

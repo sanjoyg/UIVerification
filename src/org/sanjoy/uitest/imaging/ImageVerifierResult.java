@@ -1,6 +1,7 @@
 package org.sanjoy.uitest.imaging;
 
 import java.awt.Rectangle;
+import java.io.File;
 import java.util.ArrayList;
 
 public class ImageVerifierResult {
@@ -18,16 +19,16 @@ public class ImageVerifierResult {
 		return _pass;
 	}
 
-	public void setPass(boolean _pass) {
-		this._pass = _pass;
+	public void setPass(boolean pass) {
+		this._pass = pass;
 	}
 
 	public ArrayList<Rectangle> getDiffRects() {
 		return _diffRects;
 	}
 
-	public void setDiffRects(ArrayList<Rectangle> _diffRects) {
-		this._diffRects = _diffRects;
+	public void setDiffRects(ArrayList<Rectangle> diffRects) {
+		this._diffRects = diffRects;
 	}
 
 	public float getDiffPercent() {
@@ -43,16 +44,16 @@ public class ImageVerifierResult {
     	return _diffPercent;
 	}
 
-	public void setDiffPercent(float _diffPercent) {
-		this._diffPercent = _diffPercent;
+	public void setDiffPercent(float diffPercent) {
+		this._diffPercent = diffPercent;
 	}
 
 	public int getImageArea() {
 		return _imageArea;
 	}
 
-	public void setImageArea(int _imageArea) {
-		this._imageArea = _imageArea;
+	public void setImageArea(int imageArea) {
+		this._imageArea = imageArea;
 	}
 
 	public String getBaseImage() {
@@ -89,5 +90,39 @@ public class ImageVerifierResult {
 
 	public int getFailureCount() {
 		return (_diffRects == null ? 0 : _diffRects.size());
+	}
+
+	public String toJSON() {
+		String json = new String();
+
+		json += "{";
+		json += "\"stepResult\" : {";
+		json += "\"description\": \"" + this.getDescription() + "\",";
+		json += "\"pass\" : \"" + (this.isPass() ? "Pass" : "Fail") + "\",";
+
+
+		json += "\"baseImage\" : \"" + this.getBaseImage() + "\",";
+		json += "\"compareImage\" : \"" + this.getCompareToImage() + "\",";
+		json += "\"diffImage\" : \"" + this.getDiffImage() + "\",";
+
+		json += "\"failureCount\": \"" + this.getFailureCount() + "\",";
+		json += "\"diffPercent\": \"" + ((int)this.getDiffPercent()) + "%\"";
+
+		if (getDiffRects() != null || getDiffRects().size() == 0) {
+			json += ",\"diffRects\" : [";
+			for (Rectangle diffRect : getDiffRects()) {
+				if (!json.endsWith("["))
+					json += ",";
+				json += " {";
+				json += "\"x\":\"" + diffRect.x + "\",";
+				json += "\"y\":\"" + diffRect.y + "\",";
+				json += "\"width\":\"" + diffRect.width + "\",";
+				json += "\"height\":\"" + diffRect.height + "\"";
+				json += "}";
+			}
+			json += "]";
+		}
+		json += "}}";
+		return json;
 	}
 }

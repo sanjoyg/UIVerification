@@ -21,12 +21,13 @@ public class ImageVerifier {
 
 	public static int 		GREY_SCALE_MARK_COLOR = -1;
 	public static String 	PNG_FORMAT = "png";
+	public static String    DIFF_EXTN  = ".diff." + PNG_FORMAT;
 
 	private static int 		X_SEARCH_OFFSET = 10;
 	private static int 		Y_SEARCH_OFFSET = 10;
 
-	private static float dash1[] = { 3.0f };
-	private static BasicStroke dashed = new BasicStroke(2.0f,BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+	private static float DASH_STYLE[] = { 3.0f };
+	private static BasicStroke _dashed = new BasicStroke(2.0f,BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, DASH_STYLE, 0.0f);
 
 	private List<Rectangle> _regions = null;
 	private boolean 		_include = true;
@@ -53,7 +54,7 @@ public class ImageVerifier {
 	}
 
 	public String makeDifferenceImageFileName(String fileName) {
-		return fileName + "diff.png";
+		return fileName + DIFF_EXTN;
 	}
 
 	public void makeDifferenceImage(BufferedImage img1, BufferedImage img2, String diffFileName) {
@@ -276,7 +277,7 @@ public class ImageVerifier {
 
 		Graphics2D g2 = img.createGraphics();
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setStroke(dashed);
+		g2.setStroke(_dashed);
 		g2.setPaint(Color.MAGENTA);
 
 		int x,y,width,height;
