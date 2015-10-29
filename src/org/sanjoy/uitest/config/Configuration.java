@@ -72,12 +72,13 @@ public class Configuration {
 
 		setupRunParameters();
 
-		if (_runMode != RunMode.STORE)
+		if (_runMode != RunMode.STORE) {
 			setupReportDir();
+			setupReportingParms();
+		}
 
 		ImageVerifierConfig.setupImageVerificationProps();
 
-		setupReportingParms();
 	}
 
 	private void setupRunMode(String[] args) {
