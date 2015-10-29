@@ -207,8 +207,6 @@
 			</td>
 			<td>
 			<p>Mandatory in COMPARE mode</p>
-
-			<p>None</p>
 			</td>
 			<td>
 			<p>Provides the path to the template HTML to be used. The one used is present in the template directory. The path should include the file name</p>
@@ -224,7 +222,7 @@
 			<td>
 			<p>Optional</p>
 
-			<p>Default: .</p>
+			<p>Default: <strong>.</strong></p>
 			</td>
 			<td>
 			<p>Provides the web context that would be prefixed to the resources JS/Images in the result file</p>
