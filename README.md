@@ -198,6 +198,38 @@
 			<p>Controls if a rectangle is drawn around the differences.</p>
 			</td>
 		</tr>
+		<tr>
+			<td>
+			<p>uiverify.reporttempl</p>
+			</td>
+			<td>
+			<p>Path to the template HTML</p>
+			</td>
+			<td>
+			<p>Mandatory in COMPARE mode</p>
+
+			<p>None</p>
+			</td>
+			<td>
+			<p>Provides the path to the template HTML to be used. The one used is present in the template directory. The path should include the file name</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>uiverify.webcontext</p>
+			</td>
+			<td>
+			<p>Web Context to use in the result file</p>
+			</td>
+			<td>
+			<p>Optional</p>
+
+			<p>Default: .</p>
+			</td>
+			<td>
+			<p>Provides the web context that would be prefixed to the resources JS/Images in the result file</p>
+			</td>
+		</tr>
 	</tbody>
 </table>
 
