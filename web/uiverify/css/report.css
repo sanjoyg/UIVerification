@@ -1,0 +1,211 @@
+.body {
+  margin: 2;
+  padding: 2;
+  font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+	font-size: 62.5%;
+  background-color: #2E2E2E;
+}
+.toolbar_images {
+	height: 30;
+	width: 30;
+	float: center;
+}
+.divImageViewStyleX {
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  background-color: #ede6ed;
+}
+.half {
+		box-sizing: border-box;
+		width: 50%;
+		height: 100%;
+		vertical-align: bottom;		
+}
+.leftdiv {
+	display: block;
+	float: left;
+	box-sizing: border-box;
+	width: 50%;
+	height: 100%;
+	padding : 5px;
+	vertical-align: top;
+	text-align: center;
+  border-right-style: solid;
+  border-color: white;
+  border-width: 10px;
+}
+.rightdiv {
+	display: block;
+	float: right;
+	box-sizing: border-box;
+	width: 50%;
+	height: 100%;
+	padding : 5px;
+	vertical-align: top;
+	text-align:center;
+  border-left-style: solid;
+  border-color: white;
+  border-width: 10px;
+}
+.diffdiv {
+	display: block;
+	float: left;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	padding : 5px;
+	vertical-align: top;
+}
+.canvas-container {
+	text-align: center;
+}
+.canvasStyle {
+	display: inline;
+	width: inherit;
+	height: inherit;
+	text-align: center;
+}
+.headerTableStyle {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 14;
+    width: 100%;
+    border-collapse: collapse;	
+    background-color: #2E2E2E;
+    vertical-align: bottom;
+}
+.compareDivTableStyle {
+  width: 100%;
+  height: 100%;
+}
+.toolHeader {
+    margin: 2;
+    padding: 2;
+	  font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+	  font-size: 3em;
+	  text-align: bottom;
+   	vertical-align: bottom;
+   	color: white;
+   	width: 99%;
+}
+.headerLeft {
+    font-size: 1em;
+    text-align: left;
+    vertical-align: bottom;
+    color: #FFFF00;
+    white-space: nowrap;
+    width: 1%;
+}
+.headerRight {
+   font-size: 1em;
+   text-align: right;
+   vertical-align: bottom;
+   color: white;
+   white-space:nowrap;
+   width: 1%;
+}
+#homeTable {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+#homeTable tr.contentArea {
+  height: 100%;
+  vertical-align: top;
+}
+#stepResultsTable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 14;
+    width: 100%;
+    border-collapse: collapse;
+}
+#stepResultsTable td {
+    font-size: 14;
+    text-align: center;
+    border: 1px solid #eeeeee;
+    padding: 3px 7px 2px 7px;
+}
+#stepResultsTable th {
+    font-size: 14;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #2E2E2E;
+    color: #FFFFFF;
+    width: 10%;
+    border: 1px solid #2E2E2E;
+}
+#stepResultsTable th.descTH {
+	text-align: left;
+	width: 60%;
+}
+#resultsTable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 14;
+    width: 90%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+#resultsTable td {
+  overflow: nowrap;
+  border-bottom: 2px solid #CCC;
+  padding: 6px 8px;
+  text-align: left;
+}
+#resultsTable td.headerTD {
+  border-bottom: 4px solid #6678B1;
+  padding: 15px 8px;
+  font-size: 1.2em;
+}
+#resultsTable td.headerResultPassTD {
+  text-align: right;
+  color: green;
+  border-bottom: 4px solid #6678B1;
+  font-size: 1.2em;
+}
+#resultsTable td.headerResultFailTD {
+  text-align: right;
+  color: red;
+  border-bottom: 4px solid #6678B1;
+  font-size: 1.2em;
+}
+#resultsTable td.descTD {
+  text-align: left;
+  width: 60%;
+}
+#resultsTable td.passTD {
+  text-align: left;  
+  color: green;
+  font-weight: bold;
+}
+#resultsTable td.failTD {
+  text-align: left;
+  color: red;
+}
+#resultsTable td.noStyleTD {
+   border-bottom: 0px solid #6678B1;
+}
+#toolbarTable {
+  border-top: 2px solid #6678B1;
+  margin-left:auto; 
+  margin-right:auto;
+}
+#toolbarTable td {
+  padding: 0px 10px;
+}
+#imageDescTable {
+  margin-left:auto; 
+  margin-right:auto;
+}
+#imageDescTable td {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 14;
+  padding: 0px 10px;
+}
+#imageDescTable td.baseImageDesc {
+  float: left;
+}
+#imageDescTable td.compareImageDesc {
+  float: right;
+}

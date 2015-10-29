@@ -1,0 +1,84 @@
+<html>
+	<head>
+		<script src="#WEB_CONTEXT#/uiverify/js/jquery.1.11.3.js"></script>
+		<script src="#WEB_CONTEXT#/uiverify/js/fabric.js-1.5.0/dist/fabric.js"></script>
+		<script src="#WEB_CONTEXT#/uiverify/js/report.js"></script>
+		<link rel="stylesheet" href="#WEB_CONTEXT#/uiverify/css/report.css" type="text/css"/>
+	</head>
+
+	<body style="margin:0; padding:0;">
+		<div>
+			<table id="homeTable">
+				<tr>
+					<td>
+						<div id="header">
+							<table id="mainHeader" class="headerTableStyle">
+								<tr>
+									<td colspan="4" class="toolHeader">UI Verification</td>
+									<td class="headerRight"><p>Start Time : </p></td><td/>
+									<td class="headerLeft"><p id="startTime">start time</p></td><td>&nbsp;&nbsp;</td>
+									<td class="headerRight"><p>End Time : </p></td><td/>
+									<td class="headerLeft"><p id="endTime">end time</p></td><td>&nbsp;&nbsp;</td>
+									<td class="headerRight"><p>Result : </p></td><td/>
+									<td class="headerLeft"><p id="result">Pass</p></td>
+									<td>&nbsp;&nbsp;</td>
+								</tr>
+							</table>
+							<table id="stepHeader" class="headerTableStyle">
+								<tr>
+									<td colspan="4" class="toolHeader" id="stepNameId">UI Verification</td>
+									<td class="headerRight"><p># Failures : </p></td><td/>
+									<td class="headerLeft"><p id="stepNoOfFailuresId">failures</p></td><td>&nbsp;&nbsp;</td>
+									<td class="headerRight"><p>Failure % : </p></td><td/>
+									<td class="headerLeft"><p id="stepFailurePercentId">failure percent</p></td><td>&nbsp;&nbsp;</td>
+									<td class="headerRight"><p>Result : </p></td><td/>
+									<td class="headerLeft"><p id="stepResultId">Pass</p></td>
+									<td>&nbsp;&nbsp;</td>
+								</tr>
+							</table>
+						</div>
+					</td>
+				</tr>
+				<tr class="contentArea">
+					<td>
+						<div id="resultsDiv" class="mainContent"></div>
+						<div id = "overlay_view" style="width:100%; height:100%;">
+							<table id="imageViewTable" style="width:100%; height:100%">
+								<tr id="compareRow" style="height:100%">
+									<td style="width:50%"></td>
+									<td style="width:50%"></td>
+								</tr>
+							</table>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id ="footerToolbar">
+						    <table id="imageDescTable">
+						    	<tr>
+						    		<td id="baseImageDesc">Baseline Image</td>
+						    		<td>
+										<table id="toolbarTable">
+											<tr>
+												<td><img id="zoomInTool" src="#WEB_CONTEXT#/uiverify/images/zoomin.png" alt="Zoom In" class="toolbar_images" onclick="compareView.zoomIn()"></td>
+												<td><img id="zoomOutTool" src="#WEB_CONTEXT#/uiverify/images/zoomout.png" alt="Zoom Out" class="toolbar_images" onclick="compareView.zoomOut()"></td>
+												<td><img id="zoomFitTool" src="#WEB_CONTEXT#/uiverify/images/zoomfit.png" alt="Fit" class="toolbar_images" onclick="compareView.reset()"></td>
+												<td><img id="actualSizeTool" src="#WEB_CONTEXT#/uiverify/images/zoomactualsize.png" alt="Actual Size" class="toolbar_images" onclick="compareView.zoomActual()"></td>
+												<td><img id="closeTool" src="#WEB_CONTEXT#/uiverify/images/close.png" alt="Close" class="toolbar_images" onclick="closeCompareImages()"></td>
+											</tr>
+										</table>
+									</td>
+									<td id="compareImageDesc">Compare Image</td>
+								</tr>
+							</table>
+						<div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<script type="text/javascript">
+		var testResultsJSON=#INSERT_JSON#
+		</script>
+	</body>
+</html>
