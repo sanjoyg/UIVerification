@@ -11,7 +11,6 @@ function ImageCanvas() {
 
 	ImageCanvas.prototype.finalize = function() {
 		this.canvas.dispose();
-		alert(this.element.attr('name'));
 		this.element.parent().remove();
 		this.canvas 		= undefined;
 		this.element 		= undefined;
@@ -157,7 +156,7 @@ function CompareImageView() {
 	CompareImageView.prototype.showCompareView = function() {
 		
 		this.showingDiffImage = false;
-		alert('are we null',this.diff == undefined);
+		
 		if (this.diff != undefined) this.diff.finalize();
 
 		this.base 	 = new ImageCanvas();
@@ -324,7 +323,7 @@ function showDiffView() {
 }
 
 function toggleView() {
-	alert("is diff null",compareView.diff == undefined);
+	
 	if (compareView.showingDiffImage)
 		showCompareView();
 	else
