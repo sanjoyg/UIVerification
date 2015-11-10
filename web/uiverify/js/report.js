@@ -10,8 +10,9 @@ function ImageCanvas() {
 	panned      = true;
 
 	ImageCanvas.prototype.finalize = function() {
-		
 		this.canvas.dispose();
+		alert(this.element.attr('name'));
+		this.element.parent().remove();
 		this.canvas 		= undefined;
 		this.element 		= undefined;
 		this.img 			= undefined;
@@ -20,7 +21,10 @@ function ImageCanvas() {
 		this.panned 		= false;
 	}
 
-	ImageCanvas.prototype.init = function(element, src) {
+	//ImageCanvas.prototype.init = function(element, src) {
+	ImageCanvas.prototype.init = function(parent, element, src) {
+		var canvasHTML = "<canvas class='canvasStyle' id='" + element + "'></canvas>";
+		$("#" + parent).append(canvasHTML);
 		this.canvas  = new fabric.Canvas(element);
 		this.canvas.containerClass = "default_canvas_style";
 		this.canvas.selection = false;
@@ -50,6 +54,9 @@ function ImageCanvas() {
 	}
 
 	ImageCanvas.prototype.adjustDimensions = function() {
+		if (compareView.showingDiffImage) {
+			var x = 1;
+		}
 		if (this.img == undefined)
 			return;
 		var scaleH = (this.img.height + 20) /this.element.parent().parent().height();
@@ -127,25 +134,39 @@ function ImageCanvas() {
 
 function CompareImageView() {
 
-	base 			 = undefined;
-	compare 		 = undefined;
+	base 	= undefined;
+	compare = undefined;
+	diff    = undefined;
+
+	showingDiffImage = false;
+	imageInfo = undefined;
 
 	CompareImageView.prototype.finalize = function () {
 		if (this.base != undefined)
 			this.base.finalize();
 		if (this.compare != undefined)
 			this.compare.finalize();
+		if (this.diff != undefined)
+			this.diff.finalize();
+
 		this.base    = undefined;
 		this.compare = undefined;
+		this.diff    = undefined;
 	}
-	// Effectively the constructor, should be called every time.
-	CompareImageView.prototype.initView = function(baseImageCanvas, baseImageSrc, compareImageCanvas, compareImageSrc) {
+
+	CompareImageView.prototype.showCompareView = function() {
+		
+		this.showingDiffImage = false;
+		alert('are we null',this.diff == undefined);
+		if (this.diff != undefined) this.diff.finalize();
+
 		this.base 	 = new ImageCanvas();
 		this.compare = new ImageCanvas();
-		
-		this.base.init(baseImageCanvas, baseImageSrc);
-		this.compare.init(compareImageCanvas, compareImageSrc);
-		
+		this.diff    = undefined;
+
+		this.base.init(this.imageMeta.source.parent,this.imageMeta.source.canvas,this.imageMeta.source.src);
+		this.compare.init(this.imageMeta.compare.parent,this.imageMeta.compare.canvas,this.imageMeta.compare.src);
+
 		var that = this;
 		this.base.canvas.on('object:moving', function(eventObj) {
 			that.pan(eventObj);
@@ -155,19 +176,26 @@ function CompareImageView() {
 			that.pan(eventObj);
 		});
 	}
+	// Effectively the constructor, should be called every time.
+	//CompareImageView.prototype.initView = function(baseImageCanvas, baseImageSrc, compareImageCanvas, compareImageSrc, diffImageCanvas, diffImageSrc) {
+	CompareImageView.prototype.initView = function(imageInfo) {
+		this.imageMeta = imageInfo;
+		this.showCompareView();
+	}
 
-	// Render, sets the scaling and make sures the canvas is sized the right way
-	CompareImageView.prototype.render = function (callback) {
-		if (this.baseImageWidth != undefined) {
-			this._render(this.baseCanvasElem,this.baseCanvas);
-			this._render(this.compareCanvasElem, this.compareCanvas);
-			if (callback != undefined)
-				callback();
-		}
+	CompareImageView.prototype.showDiffView = function() {
+		this.showingDiffImage = true;
+		if (this.base != undefined)    this.base.finalize();
+		if (this.compare != undefined) this.compare.finalize();
+		
+		this.base 	 = undefined;
+		this.compare = undefined;		
+		this.diff    = new ImageCanvas();
+
+		this.diff.init(this.imageMeta.diff.parent,this.imageMeta.diff.canvas,this.imageMeta.diff.src);
 	}
 
 	CompareImageView.prototype.pan = function(eventObj) {
-		console.log(eventObj);
 		if (eventObj.target != undefined && this.base != undefined && this.compare != undefined) {
 			var moved;
 			var toBeMoved;
@@ -186,8 +214,6 @@ function CompareImageView() {
 				window.requestAnimationFrame( function () {
 					toBeMoved.pan(moved);
 				});
-			} else {
-				console.log("toBeMoved is null", eventObj.target, eventObj.target.type);
 			}
 		}
 	}
@@ -239,18 +265,29 @@ function CompareImageView() {
 			this.compare.zoomActual();
 		}
 	}
+
+	CompareImageView.prototype.showDiffImage = function() {
+		this.finalize();
+
+	}
 }
 
-function showCompareImages(srcOne, srcTwo, failureCount, failurePercent, result) {
+function showCompareImages(srcOne, srcTwo, srcDiff, failureCount, failurePercent, result) {
+	 // Hide the main panels
 	 $("#mainHeader").hide();
 	 $("#resultsDiv").hide();
 
+	 // Show the step results panel
 	 $("#stepHeader").show();
 	 $("#overlay_view").fadeIn("slow");
 
+	 // Update the header
 	 $("#stepNoOfFailuresId").text(failureCount);
 	 $("#stepFailurePercentId").text(failurePercent);
 	 $("#stepResultId").text(result);
+
+	 $("#compareRow").show();
+	 $("#diffRow").hide();
 
 	 compareView = new CompareImageView();
 	 compareView.showingDiffImage = false;
@@ -258,13 +295,40 @@ function showCompareImages(srcOne, srcTwo, failureCount, failurePercent, result)
 	$("#footerToolbar").show();
 	fitToWindow();
 
-	var canvasHTML = "<canvas class='canvasStyle' id='c1'>";
-	$("#baseTD").append(canvasHTML);
+	var imageInfo =  { 
+			"source": 
+					{ "src" : "tbd", "parent": "baseTD", "canvas": "c1" },
+			"compare":
+				 	{ "src" : "tbd", "parent": "compareTD", "canvas": "c2"},
+			"diff":
+				 	{ "src" : "tbd", "parent": "diffTD", "canvas": "c3"}
+			};
 
-	canvasHTML = "<canvas class=\"canvasStyle\" id=\"c2\">";
-	$("#compareTD").append(canvasHTML);
+	imageInfo.source.src = srcOne;
+	imageInfo.compare.src = srcTwo;
+	imageInfo.diff.src = srcDiff;
 
-	compareView.initView('c1',srcOne,'c2',srcTwo);	
+	compareView.initView(imageInfo);	
+}
+
+function showCompareView() {
+	$("#diffRow").hide();
+	$("#compareRow").show();
+	compareView.showCompareView();
+}
+
+function showDiffView() {
+	$("#compareRow").hide();
+	$("#diffRow").show();
+	compareView.showDiffView();
+}
+
+function toggleView() {
+	alert("is diff null",compareView.diff == undefined);
+	if (compareView.showingDiffImage)
+		showCompareView();
+	else
+		showDiffView();
 }
 
 function closeCompareImages() {
@@ -333,6 +397,7 @@ function buildStepResults(stepResults, suiteIndex) {
 
 		tableHTML = tableHTML + "<td><a onclick=\"";
 		tableHTML = tableHTML + "showCompareImages('" + stepResult.baseImage + "','" + stepResult.compareImage + "','";
+		tableHTML = tableHTML + stepResult.diffImage + "','";
 		tableHTML = tableHTML + String(stepResult.failureCount) +  "','" + stepResult.diffPercent + "','" + stepResult.pass +  "')\">";
 		tableHTML = tableHTML + message  + "</a></td>";
 
@@ -379,136 +444,3 @@ $(window).resize(function() {
 	};
 });
 
-var testResultsJSON = {
-	"testSuiteResult": {
-	    "result": "Pass",
-	    "startTime": "10/08 09:25",
-	    "endTime": "10/10 10:25",
-	    "suiteResults": [
-	        	{
-	                "file": "__default__",
-	                "pass": "Pass",
-	                "fileResults": [
-	                    {
-	                        "stepResult": {
-	                            "description": "My HCL Home Page",
-	                            "pass": "Fail",
-	                            "baseImage": "file:///D:/temp/uiverify/results/20151002-1645/images/base_lego_home.png",
-	                            "compareImage": "file:///D:/temp/uiverify/results/20151002-1645/images/compare_lego_home.png",
-	                            "diffImage": "file:///D:/temp/uiverify/results/20151002-1645/images/diff_lego_home.png",
-	                            "failureCount": "4",
-	                            "diffPercent": "4.9%",
-	                             "diffRects": [
-	                                {
-	                                    "x": "584",
-	                                    "y": "184",
-	                                    "width": "1",
-	                                    "height": "16"
-	                                },
-	                                {
-	                                    "x": "701",
-	                                    "y": "370",
-	                                    "width": "173",
-	                                    "height": "10"
-	                                },
-	                                {
-	                                    "x": "1351",
-	                                    "y": "578",
-	                                    "width": "12",
-	                                    "height": "56"
-	                                },
-	                                {
-	                                    "x": "0",
-	                                    "y": "641",
-	                                    "width": "1365",
-	                                    "height": "29"
-	                                }
-	                            ]
-	                        }
-	                    },
-	                    {
-	                        "stepResult": {
-	                            "description": "My HCL Login Page",
-	                            "pass": "Pass",
-	                             "baseImage": "file:///D:/temp/uiverify/results/20150828-1952/images/base_myhcl_home.png",
-	                            "compareImage": "file:///D:/temp/uiverify/results/20150828-1952/images/compare_myhcl_home.png",
-	                            "diffImage": "file:///D:/temp/uiverify/results/20150828-1952/images/diff_myhcl_home.png",
-	                            "failureCount": "2",
-	                            "diffPercent": "2.4%",
-	                            "diffRects": [
-	                                {
-	                                    "x": "562",
-	                                    "y": "162",
-	                                    "width": "45",
-	                                    "height": "59"
-	                                },
-	                                {
-	                                    "x": "551",
-	                                    "y": "348",
-	                                    "width": "345",
-	                                    "height": "54"
-	                                }
-	                            ]
-	                        }
-	                    }
-	                ]
-	            },
-	            {
-	                "file": "file2",
-	                "pass": "Pass",
-	                "fileResults": [
-	                    {
-	                        "stepResult": {
-	                            "description": "my desc",
-	                            "pass": "Fail",
-	                            "baseImage": "file:///D:/temp/uiverify/results/20151002-1645/images/base_lego_home.png",
-	                            "compareImage": "file:///D:/temp/uiverify/results/20151002-1645/images/compare_lego_home.png",
-	                            "diffImage": "file:///D:/temp/uiverify/results/20151002-1645/images/diff_lego_home.png",
-	                            "failureCount": "2",
-	                            "diffPercent": "2.8%",
-	                            "diffRects": [
-	                                {
-	                                    "x": "562",
-	                                    "y": "162",
-	                                    "width": "45",
-	                                    "height": "59"
-	                                },
-	                                {
-	                                    "x": "551",
-	                                    "y": "348",
-	                                    "width": "345",
-	                                    "height": "54"
-	                                }
-	                            ]
-	                        }
-	                    },
-	                    {
-	                        "stepResult": {
-	                            "description": "my descx",
-	                            "pass": "Pass",
-	                            "baseImage": "file:///D:/temp/uiverify/results/20151002-1645/images/base_lego_home.png",
-	                            "compareImage": "file:///D:/temp/uiverify/results/20151002-1645/images/compare_lego_home.png",
-	                            "diffImage": "file:///D:/temp/uiverify/results/20151002-1645/images/diff_lego_home.png",
-	                            "failureCount": "2",
-	                            "diffPercent": "2.4%",
-	                            "diffRects": [
-	                                {
-	                                    "x": "562",
-	                                    "y": "162",
-	                                    "width": "45",
-	                                    "height": "59"
-	                                },
-	                                {
-	                                    "x": "551",
-	                                    "y": "348",
-	                                    "width": "345",
-	                                    "height": "54"
-	                                }
-	                            ]
-	                        }
-	                    }
-	                ]
-	            }
-	        ]
-	    }
-	}
